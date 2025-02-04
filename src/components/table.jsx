@@ -1,27 +1,78 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { url } from "../../env";
 
-const List = ({ data, headers }) => {
+const List = ({ headers }) => {
+  const [data, setData] = useState([]);
+
+  const fetchData = async () => {
+    const response = await axios.get(url);
+    setData(response.data);
+    console.log(response.data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
-    <div className="container">
-      <h2>CONTACTOS</h2>
-      <table className="table table-dark table-striped">
-        <thead>
+    <div
+      id="table"
+      className="flex flex-col items-center justify-center w-full p-6"
+    >
+      <p></p>
+      <h1 className="text-center" style={{ alignItems: "center" }}>
+        Mis Contactos
+      </h1>
+      <hr />
+      <table className="table table-dark table-responsive table-striped w-100">
+        <thead className="thead-dark" style={{ textAlign: "center" }}>
           <tr>
-            {headers && headers.map((x, index) => (
-              <th key={index}>{x}</th>
-            ))}
+            {headers && headers.map((x, index) => <th key={index}>{x}</th>)}
           </tr>
         </thead>
         <tbody>
-          {data && data.map((x) => (
-            <tr key={x.id}>
-              <td>{x.id}</td>
-              <td>{x.nombre}</td>
-              <td>{x.apellido}</td>
-              <td>{x.numeroTelefono}</td>
-              <td>{x.email}</td>
-            </tr>
-          ))}
+          {data &&
+            data.map((x, index) => (
+              <tr key={x.id}>
+                <td>{index + 1}</td>
+                <td>{x.nombre}</td>
+                <td>{x.apellido}</td>
+                <td>{x.numeroTelefono}</td>
+                <td>{x.email}</td>
+                <td>
+                  <div className="btn-group flex justify-center gap-4">
+                    <svg
+                      type="button"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-trash3-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                    </svg>
+                    <svg
+                      type="button"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-pencil-square"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                      <path
+                        fillRule="evenodd"
+                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                      />
+                    </svg>
+                  </div>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

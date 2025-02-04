@@ -3,32 +3,31 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import axios from 'axios';
 import Lista from './components/table'
+import Navbar from './components/navbar'
+import Formulario from './components/form'
 import { url } from '../env'
 import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
-  const [data, setData] = useState([]);
-
-  const fetchData = async () => {
-    const response = await axios.get(url);
-    setData(response.data);
-    console.log(response.data);
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, [])
 
   const headers = [
     "Id",
     "Nombre",
     "Apellido",
     "Telefono",
-    "Email"
+    "Email",
+    "Acciones"
   ];
 
   return (
-      <Lista data={data} headers={headers}/>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Navbar  />} />
+          <Route path="/listaContactos" element={<Lista headers={headers} />} />
+          <Route path="/formulario" element={<Formulario />} />
+        </Routes>
+      </BrowserRouter>
   );
 }
 
